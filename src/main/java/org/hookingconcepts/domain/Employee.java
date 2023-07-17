@@ -2,11 +2,11 @@ package org.hookingconcepts.domain;
 
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-@RedisHash("Employee")
+@Document(collection = "Employee")
 public class Employee implements Serializable {
 
     @Id
