@@ -41,4 +41,9 @@ public class HookingApi {
         return  ResponseEntity.ok(hookingService.deleteEmployeeById(id));
     }
 
+    @GetMapping("/testredis")
+    public ResponseEntity<String> testRedis() {
+        return ResponseEntity.ok(hookingService.redisData());
+    }
+
 }

@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,8 @@ public class HookingService {
     @Autowired
     private EmployeeRepo employeeRepo;
 
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
 
     public String getMessage() {
         return "Welcome to Hooking Concepts";
@@ -58,4 +62,15 @@ public class HookingService {
         }
     }
 
+    public String redisData() {
+        String ans = "";
+        ValueOperations<String,Object> valueOperations = redisTemplate.opsForValue();
+        if (valueOperations.getOperations().hasKey("test")) {
+            return (String) valueOperations.get("test");
+        } else {
+            ans = "data not found setting into redis now";
+            valueOperations.setIfAbsent("test","data available in redis", Duration.ofMinutes(1L));
+            return ans;
+        }
+    }
 }
